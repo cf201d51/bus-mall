@@ -24,13 +24,19 @@ Function to generate a random selection not in the current or previous set.
   - If there was no previous set the array should be empty.
 - Repeat the loop if the random number is found in either array.
 
+Function to render set on the page.  Each item should have:
+- Image
+- Caption
+- id attribute based on the index of the item
+- Click event listener
+
 - Use a global variable to count votes.
 - When the vote count reaches(or exceeds) 25,
   - reset the vote count to zero
   - remove event listeners on the item images
   - display the result report
 
-/
+Function to render results report.
 
 */
 
