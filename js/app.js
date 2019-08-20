@@ -1,6 +1,8 @@
 'use strict';
 
-var displayAtOnce = 10;
+var displayAtOnce = 4;
+var votePerSession = 25;
+var voteCount = 0;
 
 var currentSet = [];
 var previousSet = [];
@@ -56,8 +58,23 @@ function test() {
   }
 }
 
+function renderCurrentSet() {
+  var itemDisplay = document.getElementById('report_container');
+  clearElement(itemDisplay);
+
+}
+
+
+function renderResults() {
+  // Find the element to receive the output
+  var reportContainer = document.getElementById('report_container');
+  clearElement(reportContainer);
+
+}
+
 function doNextSet() {
-  test();
+  BusMallItem.getNextRandomSet();
+  renderCurrentSet();
 }
 
 function initializeBusMall() {
@@ -76,7 +93,7 @@ function initializeBusMall() {
   new BusMallItem('/assets/images/scissors.jpg', 'Scissors');
   new BusMallItem('/assets/images/shark.jpg', 'Shark');
   new BusMallItem('/assets/images/sweep.png', 'Sweep');
-  new BusMallItem('/assets/images/tauntaun.jpg', 'Tauntaun');
+  new BusMallItem('/assets/images/tauntaun.jpg', 'Taun-taun');
   new BusMallItem('/assets/images/unicorn.jpg', 'Unicorn');
   new BusMallItem('/assets/images/usb.gif', 'USB');
   new BusMallItem('/assets/images/water-can.jpg', 'Water Can');
@@ -113,6 +130,15 @@ function addElement(parent, tagName, text, className) {
     parent.appendChild(newElement);
   }
   return newElement;
+}
+
+function clearElement(element) {
+  // Clear it
+  // the below is faster than main.innerHTML = '';
+  // https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
 }
 
 initializeBusMall();
