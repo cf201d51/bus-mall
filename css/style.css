@@ -1,0 +1,23 @@
+#item_display {}
+
+
+figure {
+  border: 1px solid grey;
+  max-width: 200px;
+  /* display: inline; */
+}
+
+figure img {
+  cursor: pointer;
+  display: block;
+  margin: auto;
+  min-width: 100%;
+  width: 200px;
+}
+
+figcaption {
+  background: #ccc;
+  font-weight: bold;
+  line-height: 2em;
+  text-align: center;
+}
