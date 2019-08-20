@@ -1,6 +1,6 @@
 'use strict';
 
-var displayAtOnce = 4;
+var displayAtOnce = 3;
 var votePerSession = 25;
 var voteCount = 0;
 
@@ -18,7 +18,7 @@ function BusMallItem(aPath, aCaption) {
   this.caption = aCaption;
   this.voteCount = 0;
   this.displayCount = 0;
-  BusMallItem.list.push(this);
+  this.index = BusMallItem.list.push(this) - 1;
 }
 
 // Array of BusMall item objects
@@ -51,30 +51,54 @@ BusMallItem.getNextRandomSet = function () {
   }
 };
 
-function test() {
-  for (var i = 1; i <= 10; i++) {
-    BusMallItem.getNextRandomSet();
-    console.log(currentSet);
+function onItemClick(event) {
+  var index = parseInt(event.target.id);
+  console.log(event.target);
+  console.log(index);
+  var item = BusMallItem.list[index];
+  item.voteCount++;
+  voteCount++;
+  if (voteCount >= votePerSession) {
+    voteCount = 0;
+    renderResults;
+  } else {
+    doNextSet();
   }
 }
+
+BusMallItem.prototype.render = function () {
+  var id = `${this.index}`;
+  var el = addElement(undefined, 'figure', '', 'item_class', id);
+  addElement(el, 'img', undefined, undefined, id).src = this.path;
+  addElement(el, 'figcaption', this.caption, undefined, id);
+  el.addEventListener('click', onItemClick);
+  return el;
+};
 
 function renderCurrentSet() {
   var itemDisplay = document.getElementById('report_container');
   clearElement(itemDisplay);
-
+  for (var i = 0; i < currentSet.length; i++) {
+    var item = BusMallItem.list[currentSet[i]];
+    itemDisplay.appendChild(item.render());
+    item.displayCount++;
+  }
 }
 
+function doNextSet() {
+  console.log('NextSet');
+  BusMallItem.getNextRandomSet();
+  renderCurrentSet();
+}
 
 function renderResults() {
   // Find the element to receive the output
   var reportContainer = document.getElementById('report_container');
   clearElement(reportContainer);
-
-}
-
-function doNextSet() {
-  BusMallItem.getNextRandomSet();
-  renderCurrentSet();
+  for (var i = 0; i < BusMallItem.list.length; i++) {
+    var item = BusMallItem.list[i];
+    addElement(reportContainer, 'p', `${item.caption}: ${item.voteCount} votes out of ${item.displayCount} times displayed`);
+  }
 }
 
 function initializeBusMall() {
@@ -110,21 +134,25 @@ function initializeBusMall() {
 // Helper Functions -----------------------------------------------------
 
 /**
- * This is a helper function to add an element with given tag name optional text and class names to the given parent
+ * This is a helper function to add an element with given tag name optional text, class name, and id to the given parent
  *
  * @param {*} parent
  * @param {*} tagName
  * @param {*} text
  * @param {*} className
+ * @param {*} id
  * @returns
  */
-function addElement(parent, tagName, text, className) {
+function addElement(parent, tagName, text, className, id) {
   var newElement = document.createElement(tagName);
   if (text) {
     newElement.textContent = text;
   }
   if (className) {
     newElement.className = className;
+  }
+  if (id) {
+    newElement.id = id;
   }
   if (parent) {
     parent.appendChild(newElement);
