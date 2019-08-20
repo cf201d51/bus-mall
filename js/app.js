@@ -1,7 +1,7 @@
 'use strict';
 
 var displayAtOnce = 3;
-var votePerSession = 25;
+var votePerSession = 5;
 var voteCount = 0;
 
 var currentSet = [];
@@ -25,17 +25,17 @@ function BusMallItem(aPath, aCaption) {
 BusMallItem.list = [];
 
 BusMallItem.getNextRandomItem = function () {
-  newRandom: do {
+  tryAgain: do {
     var x = Math.floor(Math.random() * this.list.length);
 
     for (i = 0; i < previousSet.length; i++) {
       if (x === previousSet[i]) {
-        continue newRandom;
+        continue tryAgain;
       }
     }
     for (var i = 0; i < currentSet.length; i++) {
       if (x === currentSet[i]) {
-        continue newRandom;
+        continue tryAgain;
       }
     }
     break;
@@ -53,14 +53,14 @@ BusMallItem.getNextRandomSet = function () {
 
 function onItemClick(event) {
   var index = parseInt(event.target.id);
-  console.log(event.target);
-  console.log(index);
   var item = BusMallItem.list[index];
   item.voteCount++;
   voteCount++;
+  console.log('Vote Count: ', voteCount);
   if (voteCount >= votePerSession) {
+    clearItemDisplay();
     voteCount = 0;
-    renderResults;
+    renderResults();
   } else {
     doNextSet();
   }
@@ -75,8 +75,13 @@ BusMallItem.prototype.render = function () {
   return el;
 };
 
+function clearItemDisplay() {
+  var itemDisplay = document.getElementById('item_display');
+  clearElement(itemDisplay);
+}
+
 function renderCurrentSet() {
-  var itemDisplay = document.getElementById('report_container');
+  var itemDisplay = document.getElementById('item_display');
   clearElement(itemDisplay);
   for (var i = 0; i < currentSet.length; i++) {
     var item = BusMallItem.list[currentSet[i]];
@@ -91,14 +96,22 @@ function doNextSet() {
   renderCurrentSet();
 }
 
+function onClickRunAgain(e) {
+  doNextSet();
+}
+
 function renderResults() {
   // Find the element to receive the output
   var reportContainer = document.getElementById('report_container');
   clearElement(reportContainer);
   for (var i = 0; i < BusMallItem.list.length; i++) {
     var item = BusMallItem.list[i];
-    addElement(reportContainer, 'p', `${item.caption}: ${item.voteCount} votes out of ${item.displayCount} times displayed`);
+    var reportLine = `${item.caption}: ${item.voteCount} votes out of ${item.displayCount} times displayed`;
+    addElement(reportContainer, 'p', reportLine);
   }
+
+  var btn = addElement(reportContainer, 'button', 'Run Again');
+  btn.addEventListener('click', onClickRunAgain);
 }
 
 function initializeBusMall() {
@@ -161,8 +174,7 @@ function addElement(parent, tagName, text, className, id) {
 }
 
 function clearElement(element) {
-  // Clear it
-  // the below is faster than main.innerHTML = '';
+  // Clear it the below is faster than main.innerHTML = '';
   // https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
   while (element.firstChild) {
     element.removeChild(element.firstChild);
