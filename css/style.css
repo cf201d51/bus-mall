@@ -3,9 +3,12 @@ main>section {
   text-align: center;
 }
 
-#item_display {}
+#item_display {
+  height: 350px;
+}
 
 figure {
+  margin: 1em 1em;
   border: 1px solid grey;
   max-width: 200px;
   display: inline-block;
@@ -27,12 +30,17 @@ figcaption {
   text-align: center;
 }
 
-br {}
-
 #report_container {
   border-top: 1px solid grey;
 }
 
 #report_container p {
   margin: .5em 0;
+}
+
+#report_container>canvas {
+  margin: .5em;
+  border: .2em solid gray;
+  width: 80%;
+  height: auto;
 }

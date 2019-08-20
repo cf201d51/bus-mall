@@ -7,6 +7,10 @@ var voteCount = 0;
 var currentSet = [];
 var previousSet = [];
 
+// Find the element to receive the output
+var reportContainer = document.getElementById('report_container');
+
+
 /**
  * Constructor function for BusMallItem objects
  *
@@ -88,6 +92,7 @@ function renderCurrentSet() {
     itemDisplay.appendChild(item.render());
     item.displayCount++;
   }
+  itemDisplay.scrollIntoView(true);
 }
 
 function doNextSet() {
@@ -100,18 +105,58 @@ function onClickRunAgain(e) {
   doNextSet();
 }
 
-function renderResults() {
-  // Find the element to receive the output
-  var reportContainer = document.getElementById('report_container');
-  clearElement(reportContainer);
+function renderResultsAsList() {
   for (var i = 0; i < BusMallItem.list.length; i++) {
     var item = BusMallItem.list[i];
     var reportLine = `${item.caption}: ${item.voteCount} votes out of ${item.displayCount} times displayed`;
     addElement(reportContainer, 'p', reportLine);
   }
+}
+
+function renderResultsAsTable() {
+
+}
+
+function renderResultsAsChart() {
+//  <canvas id="report_canvas"></canvas>
+  var canvas = addElement(reportContainer, 'canvas', undefined, undefined, 'report_canvas');
+  var ctx = canvas.getContext('2d');
+  var labels = [];
+  var data = [];
+
+  for (var i = 0; i < BusMallItem.list.length; i++) {
+    var item = BusMallItem.list[i];
+    labels.push(item.caption);
+    data.push(item.voteCount);
+  }
+
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Report',
+        // backgroundColor: colors,
+        borderColor: 'rgb(255, 99, 132)',
+        data: data,
+      }]
+    },
+
+    // Configuration options go here
+    options: {}
+  });
+}
+
+function renderResults() {
+  clearElement(reportContainer);
+  renderResultsAsChart();
 
   var btn = addElement(reportContainer, 'button', 'Run Again');
   btn.addEventListener('click', onClickRunAgain);
+  reportContainer.scrollIntoView(true);
 }
 
 function initializeBusMall() {
