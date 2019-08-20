@@ -1,10 +1,15 @@
-#item_display {}
+main>section {
+  position: relative;
+  text-align: center;
+}
 
+#item_display {}
 
 figure {
   border: 1px solid grey;
   max-width: 200px;
-  /* display: inline; */
+  display: inline-block;
+  cursor: pointer;
 }
 
 figure img {
@@ -20,4 +25,14 @@ figcaption {
   font-weight: bold;
   line-height: 2em;
   text-align: center;
+}
+
+br {}
+
+#report_container {
+  border-top: 1px solid grey;
+}
+
+#report_container p {
+  margin: .5em 0;
 }
