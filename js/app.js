@@ -1,7 +1,7 @@
 'use strict';
 
 var displayAtOnce = 3;
-var votePerSession = 5;
+var votePerSession = 25;
 var voteCount = 0;
 
 var currentSet = [];
