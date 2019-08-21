@@ -160,26 +160,26 @@ function renderResults() {
 }
 
 function initializeBusMall() {
-  new BusMallItem('/assets/images/bag.jpg', 'Bag');
-  new BusMallItem('/assets/images/banana.jpg', 'Banana');
-  new BusMallItem('/assets/images/bathroom.jpg', 'Bathroom');
-  new BusMallItem('/assets/images/boots.jpg', 'Boots');
-  new BusMallItem('/assets/images/breakfast.jpg', 'Breakfast');
-  new BusMallItem('/assets/images/bubblegum.jpg', 'Bubblegum');
-  new BusMallItem('/assets/images/chair.jpg', 'Chair');
-  new BusMallItem('/assets/images/cthulhu.jpg', 'Cthulhu');
-  new BusMallItem('/assets/images/dog-duck.jpg', 'Dog-Duck');
-  new BusMallItem('/assets/images/dragon.jpg', 'Dragon');
-  new BusMallItem('/assets/images/pen.jpg', 'Pen');
-  new BusMallItem('/assets/images/pet-sweep.jpg', 'Pet-Sweep');
-  new BusMallItem('/assets/images/scissors.jpg', 'Scissors');
-  new BusMallItem('/assets/images/shark.jpg', 'Shark');
-  new BusMallItem('/assets/images/sweep.png', 'Sweep');
-  new BusMallItem('/assets/images/tauntaun.jpg', 'Taun-taun');
-  new BusMallItem('/assets/images/unicorn.jpg', 'Unicorn');
-  new BusMallItem('/assets/images/usb.gif', 'USB');
-  new BusMallItem('/assets/images/water-can.jpg', 'Water Can');
-  new BusMallItem('/assets/images/wine-glass.jpg', 'Wine Glass');
+  new BusMallItem('assets/images/bag.jpg', 'Bag');
+  new BusMallItem('assets/images/banana.jpg', 'Banana');
+  new BusMallItem('assets/images/bathroom.jpg', 'Bathroom');
+  new BusMallItem('assets/images/boots.jpg', 'Boots');
+  new BusMallItem('assets/images/breakfast.jpg', 'Breakfast');
+  new BusMallItem('assets/images/bubblegum.jpg', 'Bubblegum');
+  new BusMallItem('assets/images/chair.jpg', 'Chair');
+  new BusMallItem('assets/images/cthulhu.jpg', 'Cthulhu');
+  new BusMallItem('assets/images/dog-duck.jpg', 'Dog-Duck');
+  new BusMallItem('assets/images/dragon.jpg', 'Dragon');
+  new BusMallItem('assets/images/pen.jpg', 'Pen');
+  new BusMallItem('assets/images/pet-sweep.jpg', 'Pet-Sweep');
+  new BusMallItem('assets/images/scissors.jpg', 'Scissors');
+  new BusMallItem('assets/images/shark.jpg', 'Shark');
+  new BusMallItem('assets/images/sweep.png', 'Sweep');
+  new BusMallItem('assets/images/tauntaun.jpg', 'Taun-taun');
+  new BusMallItem('assets/images/unicorn.jpg', 'Unicorn');
+  new BusMallItem('assets/images/usb.gif', 'USB');
+  new BusMallItem('assets/images/water-can.jpg', 'Water Can');
+  new BusMallItem('assets/images/wine-glass.jpg', 'Wine Glass');
 
   // protect against infinite loop!
   if (displayAtOnce * 2 > BusMallItem.list.length) {
