@@ -122,12 +122,14 @@ function renderResultsAsChart() {
   var canvas = addElement(reportContainer, 'canvas', undefined, undefined, 'report_canvas');
   var ctx = canvas.getContext('2d');
   var labels = [];
-  var data = [];
+  var countData = [];
+  var percentData = [];
 
   for (var i = 0; i < BusMallItem.list.length; i++) {
     var item = BusMallItem.list[i];
     labels.push(item.caption);
-    data.push(item.voteCount);
+    countData.push(item.voteCount);
+    percentData.push(Math.round((item.voteCount / item.displayCount) * 100));
   }
 
   var chart = new Chart(ctx, {
@@ -138,15 +140,34 @@ function renderResultsAsChart() {
     data: {
       labels: labels,
       datasets: [{
-        label: 'Report',
-        // backgroundColor: colors,
-        borderColor: 'rgb(255, 99, 132)',
-        data: data,
+        label: 'Number of Votes',
+        backgroundColor: 'rgb(209, 43, 43)',
+        // borderColor: 'rgb(255, 99, 132)',
+        data: countData,
+        yAxisID: 'left-y-axis',
+      }, {
+        label: 'Percent of Time Selected when Displayed',
+        backgroundColor: 'rgb(42, 207, 207)',
+        // borderColor: 'rgb(255, 99, 132)',
+        data: percentData,
+        yAxisID: 'right-y-axis',
       }]
     },
 
     // Configuration options go here
-    options: {}
+    options: {
+      scales: {
+        yAxes: [{
+          id: 'left-y-axis',
+          type: 'linear',
+          position: 'left'
+        }, {
+          id: 'right-y-axis',
+          type: 'linear',
+          position: 'right'
+        }]
+      }
+    }
   });
 }
 

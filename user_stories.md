@@ -6,6 +6,7 @@
 - ... we want to display only items not already in the current set and also not in the previous set, so that the selection process is as untainted as possible.
 - ... we want not to show results to users until after 25 selections, so that product selection process is as untainted as possible.
 - ... we want to know the total number of clicks for each item, as well as the percentage of time an item was selected when shown so that we can test potential customer interest.
+- ... we want to diplay a chart to the users showing the number of clicks for each item as well as the percentage of time an item was selected whren shown so that the user is more engaged.
 
 ## As the developer
 
