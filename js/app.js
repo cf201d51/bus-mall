@@ -7,15 +7,15 @@ var votesPerSession = 25;
 var reportContainer = document.getElementById('report_container');
 
 /**
- * The global gameState object maintains the state of the application so it can be 
+ * The global gameState object maintains the state of the application so it can be
  * stopped and resumed at any point by the user.
- * 
+ *
  * This object uses local storage to track the following:
- * 
+ *
  * - The current total vote count
  * - An array for the currently displayed set
  * - Another array for the previous set
- * 
+ *
  * In addition to this object, the BusMallItem objects maintain in local storage
  * the display and vote counts for each Bus Mall item.
  */
@@ -55,13 +55,13 @@ var gameState = {
    *
    */
   incrementVoteCount: function () {
-    this.voteCount++
+    this.voteCount++;
     this.storeGameState();
   },
 
   /**
    * Reset the state of the game.
-   * 
+   *
    * This is called when the final report is generated so
    * that if the browser session is restarted, a new game is begun.
    *
@@ -75,16 +75,16 @@ var gameState = {
 
   /**
    * Generates a new randomly selected set of items.
-   * 
-   * Randomly selects items to form a new set of items with a size determined 
+   *
+   * Randomly selects items to form a new set of items with a size determined
    * by the `displayAtOnce` global variable such that:
-   * 
+   *
    * - No item is included more than once in the new set
    * - No item in the new set is included in the previous set
-   * 
+   *
    * The function updates `gameState.previousSet` with the current set
    * and leaves the newly generated set in `gameState.currentSet`.
-   * 
+   *
    * The updated sets are then posted in local storage.
    *
    */
@@ -99,7 +99,7 @@ var gameState = {
 
   /**
    * Used internally by the `getNextRandomSet()` method.
-   * 
+   *
    * This method performs the random selection for each item in the set
    * created by `getNextRandomSet()`.
    *
@@ -130,8 +130,8 @@ var gameState = {
  * Constructor function for BusMallItem objects.
  *
  * In addition to image file path and caption, BusMallItem objects
- * use local storage to track: 
- * 
+ * use local storage to track:
+ *
  * - The number of times the item is shown (`voteCount`)
  * - The number of times the item is selected (`displayCount`)
  *
@@ -157,23 +157,23 @@ function BusMallItem(aPath, aCaption) {
 // Array of BusMall item objects
 BusMallItem.list = [];
 
-/** 
+/**
  * Update local storage for the item
  */
 BusMallItem.prototype.updateLocalStorage = function () {
   var record = {
     voteCount: this.voteCount,
     displayCount: this.displayCount
-  }
+  };
   var str = JSON.stringify(record);
   localStorage.setItem(`$item_${this.path}`, str);
 };
 
 /**
  * Increment displayCount properties for all displayed items.
- * 
+ *
  * This static method of the BusMallItem module increments display
- * counts for all currently displayed items as represented by the 
+ * counts for all currently displayed items as represented by the
  * `gamesState.currentSet[]` array.  Local storage will be updated
  * for each item.
  *
@@ -187,7 +187,7 @@ BusMallItem.incrementDisplayCounts = function () {
 
 /**
  * Increment the displayCount property.
- * 
+ *
  * Call this to increment the displayCount.
  * The object will update local storage with the change.
  *
@@ -199,7 +199,7 @@ BusMallItem.prototype.incrementDisplayCount = function () {
 
 /**
  * Increment the voteCount property.
- * 
+ *
  * Call this to increment the voteCount.
  * The object will update local storage with the change.
  *
@@ -210,7 +210,7 @@ BusMallItem.prototype.incrementVoteCount = function () {
 };
 
 /**
- * Renders the item to a <figure> element with an event handler that 
+ * Renders the item to a <figure> element with an event handler that
  * captures click events that bubble up from the child <img> and <figcaption>
  * elements that each have id attributes that correspond to the index
  * of this item in the BusMallItem.list array.
@@ -228,17 +228,17 @@ BusMallItem.prototype.render = function () {
 
 /**
  * Click event handler for the clickable elements in the presented set.
- * 
+ *
  * Votes are processed here!
  * - The vote count for the item represented by the clicked on element is incremented
  * - The display counts for all currently displayed items are incremented at this time
  * - The total vote count is incremented.
- * 
+ *
  * If the is the last vote (gameState.voteCount >= votesPerSession) then
  * - The item display is cleared
  * - The game state is reset (vote count set to zero, current and previous sets are cleared)
  * - The result report is run
- * 
+ *
  * Otherwise, if there are more votes to be made then
  * - doNextSet() is called
  *
@@ -342,11 +342,17 @@ function renderResultsAsChart() {
         yAxes: [{
           id: 'left-y-axis',
           type: 'linear',
-          position: 'left'
+          position: 'left',
+          ticks: {
+            beginAtZero: true,
+          }
         }, {
           id: 'right-y-axis',
           type: 'linear',
-          position: 'right'
+          position: 'right',
+          ticks: {
+            beginAtZero: true,
+          }
         }]
       }
     }
@@ -439,7 +445,7 @@ function addElement(parent, tagName, text, className, id) {
 
 /**
  * Removes all child elements from the given element.
- * 
+ *
  * The method used is faster than ```element.innerHTML = ''``` according to
  * https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
  *
@@ -459,7 +465,7 @@ function clearElement(element) {
  */
 function run() {
   initializeBusMall();
-};
+}
 
 // Execution starts here!
 run();
