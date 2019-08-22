@@ -1,15 +1,71 @@
 'use strict';
 
 var displayAtOnce = 3;
-var votePerSession = 25;
-var voteCount = 0;
-
-var currentSet = [];
-var previousSet = [];
+var votesPerSession = 25;
 
 // Find the element to receive the output
 var reportContainer = document.getElementById('report_container');
 
+// Local storage for game state
+var gameState = {
+  voteCount: 0,
+  currentSet: [],
+  previousSet: [],
+
+  storeGameState: function () {
+    var str = JSON.stringify(gameState);
+    localStorage.setItem('gameState', str);
+  },
+
+  getGameState: function () {
+    var record = JSON.parse(localStorage.getItem('gameState'));
+    if (record) {
+      this.voteCount = record.voteCount;
+      this.currentSet = record.currentSet;
+      this.previousSet = record.previousSet;
+    }
+  },
+
+  incrementVoteCount: function () {
+    this.voteCount++
+    this.storeGameState();
+  },
+
+  reset: function () {
+    this.voteCount = 0;
+    this.currentSet = [];
+    this.previousSet = [];
+    this.storeGameState();
+  },
+
+  getNextRandomSet = function () {
+    this.previousSet = this.currentSet;
+    this.currentSet = [];
+    for (var i = 1; i <= displayAtOnce; i++) {
+      this.currentSet.push(this.getNextRandomItem());
+    }
+  },
+
+  getNextRandomItem = function () {
+    tryAgain: do {
+      var x = Math.floor(Math.random() * BusMallItem.list.length);
+
+      for (i = 0; i < this.previousSet.length; i++) {
+        if (x === this.previousSet[i]) {
+          continue tryAgain;
+        }
+      }
+      for (var i = 0; i < this.currentSet.length; i++) {
+        if (x === this.currentSet[i]) {
+          continue tryAgain;
+        }
+      }
+      break;
+    } while (true);
+    return x;
+  },
+
+};
 
 /**
  * Constructor function for BusMallItem objects
@@ -20,50 +76,50 @@ var reportContainer = document.getElementById('report_container');
 function BusMallItem(aPath, aCaption) {
   this.path = aPath;
   this.caption = aCaption;
-  this.voteCount = 0;
-  this.displayCount = 0;
+
+  var record = JSON.parse(localStorage.getItem(`$item_${aPath}`));
+  if (record) {
+    this.voteCount = record.voteCount;
+    this.displayCount = record.displayCount;
+  } else {
+    this.voteCount = 0;
+    this.displayCount = 0;
+    this.updateLocalStorage();
+  }
   this.index = BusMallItem.list.push(this) - 1;
 }
 
 // Array of BusMall item objects
 BusMallItem.list = [];
 
-BusMallItem.getNextRandomItem = function () {
-  tryAgain: do {
-    var x = Math.floor(Math.random() * this.list.length);
-
-    for (i = 0; i < previousSet.length; i++) {
-      if (x === previousSet[i]) {
-        continue tryAgain;
-      }
-    }
-    for (var i = 0; i < currentSet.length; i++) {
-      if (x === currentSet[i]) {
-        continue tryAgain;
-      }
-    }
-    break;
-  } while (true);
-  return x;
+BusMallItem.prototype.updateLocalStorage = function () {
+  var record = {
+    voteCount: this.voteCount,
+    displayCount: this.displayCount
+  }
+  var str = JSON.stringify(record);
+  localStorage.setItem(`$item_${path}`, str);
 };
 
-BusMallItem.getNextRandomSet = function () {
-  previousSet = currentSet;
-  currentSet = [];
-  for (var i = 1; i <= displayAtOnce; i++) {
-    currentSet.push(this.getNextRandomItem());
-  }
+BusMallItem.prototype.incrementDisplayCount = function () {
+  this.displayCount++;
+  this.updateLocalStorage();
+};
+
+BusMallItem.prototype.incrementVoteCount = function () {
+  this.voteCount++;
+  this.updateLocalStorage();
 };
 
 function onItemClick(event) {
   var index = parseInt(event.target.id);
   var item = BusMallItem.list[index];
-  item.voteCount++;
-  voteCount++;
-  console.log('Vote Count: ', voteCount);
-  if (voteCount >= votePerSession) {
+  item.incrementVoteCount;
+  gameState.incrementVoteCount;
+  console.log('Vote Count: ', gameState.voteCount);
+  if (gameState.voteCount >= votesPerSession) {
     clearItemDisplay();
-    voteCount = 0;
+    gameState.reset();
     renderResults();
   } else {
     doNextSet();
@@ -87,18 +143,14 @@ function clearItemDisplay() {
 function renderCurrentSet() {
   var itemDisplay = document.getElementById('item_display');
   clearElement(itemDisplay);
-  for (var i = 0; i < currentSet.length; i++) {
-    var item = BusMallItem.list[currentSet[i]];
+  addElement(itemDisplay, 'div', `${gameState.voteCount} of ${votesPerSession}`,null,'item_display');
+
+  for (var i = 0; i < gameState.currentSet.length; i++) {
+    var item = BusMallItem.list[gameState.currentSet[i]];
     itemDisplay.appendChild(item.render());
     item.displayCount++;
   }
   itemDisplay.scrollIntoView(true);
-}
-
-function doNextSet() {
-  console.log('NextSet');
-  BusMallItem.getNextRandomSet();
-  renderCurrentSet();
 }
 
 function onClickRunAgain(e) {
@@ -174,13 +226,30 @@ function renderResultsAsChart() {
 function renderResults() {
   clearElement(reportContainer);
   renderResultsAsChart();
-
+  
   var btn = addElement(reportContainer, 'button', 'Run Again');
   btn.addEventListener('click', onClickRunAgain);
   reportContainer.scrollIntoView(true);
 }
 
+function doNextSet() {
+  console.log('NextSet');
+  gameState.getNextRandomSet();
+  renderCurrentSet();
+}
+
+function restoreGameState() {
+  // Load the previous game state if there is one
+  gameState.getGameState();
+  if (gameState.currentSet.length > 0) {
+    renderCurrentSet();
+  } else {
+    doNextSet();
+  }
+}
+
 function initializeBusMall() {
+  // Load all BusMallItem objects
   new BusMallItem('assets/images/bag.jpg', 'Bag');
   new BusMallItem('assets/images/banana.jpg', 'Banana');
   new BusMallItem('assets/images/bathroom.jpg', 'Bathroom');
@@ -206,7 +275,7 @@ function initializeBusMall() {
   if (displayAtOnce * 2 > BusMallItem.list.length) {
     alert(`Can't display ${displayAtOnce} in two sets without duplicating!`);
   } else {
-    doNextSet();
+    restoreGameState();
   }
 }
 
