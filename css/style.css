@@ -1,37 +1,91 @@
-main>section {
+/* * {
+  outline: dotted 2.5px rgba(0, 255, 0, 0.658);
+} */
+
+/* `Clear Floated Elements                      */
+/* http://sonspring.com/journal/clearing-floats */
+
+.clear {
+  clear: both;
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+body {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 2vw;
+  color: hsl(270, 33%, 33%);
+  background-color: hsl(90, 20%, 90%);
+}
+
+body>header {
+  margin: 0 0 1em 0;
+  padding: .5em 4em;
+  background-color: hsl(89, 33%, 66%);
+  box-shadow: 3px 6px 8px 3px hsla(0, 0%, 0%, 0.3);
+}
+
+body>header>h1 {
+  margin: .2em 0;
+  font-size: 4em;
+  font-style: italic;
+  font-weight: 900;
+  text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.5);
+}
+
+body>main>section {
   position: relative;
   text-align: center;
 }
 
+#vote_count {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: .5em;
+  text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.5);
+}
+
 #item_display {
-  height: 350px;
+  height: 16em;
 }
 
 figure {
-  margin: 1em 1em;
-  border: 1px solid grey;
-  max-width: 200px;
+  background-color: white;
+  margin: 0em 1em 2em 1em;
+  /* border: .1em solid grey; */
+  Width: 12em;
   display: inline-block;
   cursor: pointer;
+  /* box-shadow: 3px 6px 8px 3px hsla(0, 0%, 0%, 0.3); */
+  box-shadow: 1em 2em 6em 0em rgba(0, 0, 0, 0.35), 1em 2em 2em 0em rgba(0, 0, 0, 0.1);
+  border-radius: 1em;
 }
 
 figure img {
   cursor: pointer;
   display: block;
   margin: auto;
-  min-width: 100%;
-  width: 200px;
+  max-height: 12em;
+  max-width: 12em;
+  border-radius: 1em 1em 0 0;
 }
 
 figcaption {
-  background: #ccc;
+  background-color: hsl(90, 33%, 66%);
+  border-radius: 0 0 1em 1em;
   font-weight: bold;
   line-height: 2em;
   text-align: center;
+  text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.5);
 }
 
 #report_container {
-  border-top: 1px solid grey;
+  width: 85%;
+  margin: 1em auto;
 }
 
 #report_container p {
@@ -43,4 +97,17 @@ figcaption {
   border: .2em solid gray;
   width: 80%;
   height: auto;
+}
+
+#report_container>button {
+  font-size: 1em;
+}
+
+body>footer {
+  margin: 1em 0 0 0;
+  padding: .2em 4em;
+  font-size: .75em;
+  background-color: hsl(90, 33%, 66%);
+  box-shadow: 3px 6px 8px 3px hsla(0, 0%, 0%, 0.3);
+  text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.5);
 }
