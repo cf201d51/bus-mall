@@ -274,13 +274,31 @@ function renderCurrentSet() {
   var itemDisplay = document.getElementById('item_display');
   clearElement(itemDisplay);
   addElement(itemDisplay, 'div', `Set ${gameState.voteCount + 1} of ${votesPerSession}`, null, 'vote_count');
+  var innerDiv = addElement(itemDisplay, 'div', null, null, 'item_container');
 
   for (var i = 0; i < gameState.currentSet.length; i++) {
     var item = BusMallItem.list[gameState.currentSet[i]];
-    itemDisplay.appendChild(item.render());
+    var el = item.render();
+    innerDiv.appendChild(el);
     item.displayCount++;
   }
+  itemDisplay.appendChild(innerDiv);
   itemDisplay.scrollIntoView(true);
+  window.setTimeout(toggleOpaque);
+}
+
+/**
+ * Toggles the opaque class of the of the rendered figures in oder to trigger 
+ * a fade-in transition.  This is called after a minimum delay by window.setTimeout
+ * above in oder for the browser to register the adding of the opaque class as a 
+ * transition rather an initial condition.
+ *
+ */
+function toggleOpaque() {
+  var el = document.getElementById('item_container');
+  for (var i = 0; i < el.childElementCount; i++) {
+    el.children[i].classList.toggle('opaque');
+  }
 }
 
 function onClickRunAgain(e) {

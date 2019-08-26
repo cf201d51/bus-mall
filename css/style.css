@@ -54,8 +54,9 @@ body>main>section {
 }
 
 figure {
+  position: relative;
   background-color: white;
-  margin: 0em 1em 2em 1em;
+  margin: 0em 2em 2em 2em;
   /* border: .1em solid grey; */
   Width: 12em;
   display: inline-block;
@@ -63,6 +64,16 @@ figure {
   /* box-shadow: 3px 6px 8px 3px hsla(0, 0%, 0%, 0.3); */
   box-shadow: 1em 2em 6em 0em rgba(0, 0, 0, 0.35), 1em 2em 2em 0em rgba(0, 0, 0, 0.1);
   border-radius: 1em;
+  opacity: 0;
+  transition: all 350ms;
+}
+
+figure:hover {
+  transform: scale(1.06) translateY(-.5em);
+}
+
+figure.opaque {
+  opacity: 1;
 }
 
 figure img {
@@ -76,7 +87,9 @@ figure img {
 
 figcaption {
   background-color: hsl(90, 33%, 66%);
-  border-radius: 0 0 1em 1em;
+  border-radius: 0 0 .75em .75em;
+  font-family: 'Permanent Marker';
+  font-size: 1.25em;
   font-weight: bold;
   line-height: 2em;
   text-align: center;
