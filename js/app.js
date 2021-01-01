@@ -1,4 +1,5 @@
 'use strict';
+// @ts-check
 
 var displayAtOnce = 3;
 var votesPerSession = 25;
@@ -152,6 +153,7 @@ function BusMallItem(aPath, aCaption) {
     this.updateLocalStorage();
   }
   this.index = BusMallItem.list.push(this) - 1;
+  this._preRenderedEl = this.render();
 }
 
 // Array of BusMall item objects
@@ -218,12 +220,18 @@ BusMallItem.prototype.incrementVoteCount = function () {
  * @returns the rendered element to be inserted into the DOM by the caller
  */
 BusMallItem.prototype.render = function () {
-  var id = `${this.index}`;
-  var el = addElement(undefined, 'figure', '', 'item_class', id);
-  addElement(el, 'img', undefined, undefined, id).src = this.path;
-  addElement(el, 'figcaption', this.caption, undefined, id);
-  el.addEventListener('click', onItemClick);
-  return el;
+  if (this._preRenderedEl)
+    return this._preRenderedEl;
+  else {
+    var id = `${this.index}`;
+    var el = addElement(undefined, 'figure', '', 'item_class', id);
+    var img = addElement(el, 'img', undefined, undefined, id);
+    img.src = this.path;
+    img.alt = `${this.caption} product image`;
+    addElement(el, 'figcaption', this.caption, undefined, id);
+    el.addEventListener('click', onItemClick);
+    return el;
+  }
 };
 
 /**
@@ -274,11 +282,12 @@ function renderCurrentSet() {
   var itemDisplay = document.getElementById('item_display');
   clearElement(itemDisplay);
   addElement(itemDisplay, 'div', `Set ${gameState.voteCount + 1} of ${votesPerSession}`, null, 'vote_count');
-  var innerDiv = addElement(itemDisplay, 'div', null, null, 'item_container');
+  var innerDiv = addElement(itemDisplay, 'div', null, null, 'item_row');
 
   for (var i = 0; i < gameState.currentSet.length; i++) {
     var item = BusMallItem.list[gameState.currentSet[i]];
     var el = item.render();
+    el.classList.remove('opaque');
     innerDiv.appendChild(el);
     item.displayCount++;
   }
@@ -294,11 +303,12 @@ function renderCurrentSet() {
  * transition rather an initial condition.
  *
  */
-function toggleOpaque() {
-  var el = document.getElementById('item_container');
-  for (var i = 0; i < el.childElementCount; i++) {
-    el.children[i].classList.toggle('opaque');
-  }
+function toggleOpaque(force) {
+  var el = document.getElementById('item_row');
+  el.classList.toggle('opaque', force);
+  // for (var i = 0; i < el.childElementCount; i++) {
+  //   el.children[i].classList.toggle('opaque', force);
+  // }
 }
 
 function onClickRunAgain(e) {
@@ -401,6 +411,16 @@ function restoreGameState() {
   }
 }
 
+function startGame() {
+  console.log('Starting...')
+  // protect against infinite loop!
+  if (displayAtOnce * 2 > BusMallItem.list.length) {
+    alert(`Can't display ${displayAtOnce} in two sets without duplicating!`);
+  } else {
+    restoreGameState();
+  }
+}
+
 function initializeBusMall() {
   // Load all BusMallItem objects
   new BusMallItem('assets/images/bag.jpg', 'Bag');
@@ -424,12 +444,9 @@ function initializeBusMall() {
   new BusMallItem('assets/images/water-can.jpg', 'Water Can');
   new BusMallItem('assets/images/wine-glass.jpg', 'Wine Glass');
 
-  // protect against infinite loop!
-  if (displayAtOnce * 2 > BusMallItem.list.length) {
-    alert(`Can't display ${displayAtOnce} in two sets without duplicating!`);
-  } else {
-    restoreGameState();
-  }
+  // Start the game after all image assets are loaded
+  window.onload = startGame;
+  // document.addEventListener('load', startGame);
 }
 
 // Helper Functions -----------------------------------------------------
