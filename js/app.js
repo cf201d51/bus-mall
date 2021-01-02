@@ -110,7 +110,7 @@ var gameState = {
     tryAgain: do {
       var x = Math.floor(Math.random() * BusMallItem.list.length);
 
-      for (i = 0; i < this.previousSet.length; i++) {
+      for (var i = 0; i < this.previousSet.length; i++) {
         if (x === this.previousSet[i]) {
           continue tryAgain;
         }
