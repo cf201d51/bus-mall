@@ -226,11 +226,12 @@ BusMallItem.prototype.render = function () {
     var id = `${this.index}`;
     var el = addElement(undefined, 'div', '', 'item_cell', id);
     var fig = addElement(el, 'figure', '', 'item_class', id);
+    fig.setAttribute('tabindex', '0');
+    fig.addEventListener('click', onItemClick);
     var img = addElement(fig, 'img', undefined, undefined, id);
     img.src = this.path;
     img.alt = `${this.caption} product image`;
     addElement(fig, 'figcaption', this.caption, undefined, id);
-    fig.addEventListener('click', onItemClick);
     return el;
   }
 };
