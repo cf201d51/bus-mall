@@ -72,7 +72,6 @@ body > main > section:first-child {
   border-radius: 1em;
   filter: drop-shadow(0.4em 0.6em 0.2em rgba(0, 0, 0, 0.2))
     drop-shadow(0.2em 0.25em 0.07em rgba(0, 0, 0, 0.15));
-  /* transition: opacity 500ms, transform 350ms, filter 350ms, all 350ms; */
   transition: opacity 500ms, transform 350ms, filter 350ms;
 }
 
@@ -86,12 +85,9 @@ figure {
   position: relative;
   margin: auto;
   background-color: rgb(255, 255, 255);
-  /* border: .1em solid grey; */
   width: 12em;
   display: inline-block;
   cursor: pointer;
-  /* box-shadow: 3px 6px 8px 3px hsla(0, 0%, 0%, 0.3); */
-  /* box-shadow: 1em 2em 6em 0em rgba(0, 0, 0, 0.35), 1em 2em 2em 0em rgba(0, 0, 0, 0.1); */
   border-radius: 1em;
   transition: transform 350ms;
 }
@@ -111,7 +107,6 @@ figure img {
 }
 
 figcaption {
-  nav-index: auto;
   background-color: hsl(90, 33%, 66%);
   border-radius: 0 0 0.75em 0.75em;
   font-family: "Permanent Marker";
