@@ -15,7 +15,9 @@
 }
 
 body {
+  position: relative;
   margin: 0;
+  min-height: 100vh;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 2vw;
   color: hsl(270, 33%, 33%);
@@ -37,13 +39,17 @@ body > header > h1 {
   text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.5);
 }
 
+body > main {
+  padding-bottom: 2em;
+}
+
 body > main > section {
   position: relative;
   text-align: center;
 }
 
 body > main > section:first-child {
-  z-index: 9;
+  z-index: 99;
 }
 
 #vote_count {
@@ -54,7 +60,7 @@ body > main > section:first-child {
 }
 
 #item_display {
-  height: 18em;
+  height: 16em;
 }
 
 #item_row {
@@ -94,7 +100,7 @@ body > main > section:first-child {
 
 .item_cell:hover,
 .item_cell:focus-within {
-  z-index: 99;
+  /* z-index: 99; */
   filter: drop-shadow(1.5em 3em 2em rgba(0, 0, 0, 0.35))
     drop-shadow(1.5em 3em 0.6em rgba(0, 0, 0, 0.15));
 }
@@ -156,10 +162,16 @@ figcaption {
 }
 
 body > footer {
-  margin: 1em 0 0 0;
-  padding: 0.2em 4em;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
   font-size: 0.75em;
   background-color: hsl(90, 33%, 66%);
   box-shadow: 3px 6px 8px 3px hsla(0, 0%, 0%, 0.3);
   text-shadow: 2px 2px 4px hsla(0, 0%, 0%, 0.5);
+}
+
+body > footer > div {
+  padding: 0.2em 4em;
 }
