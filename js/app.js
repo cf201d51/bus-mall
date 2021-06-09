@@ -223,15 +223,16 @@ BusMallItem.prototype.render = function () {
   if (this._preRenderedEl)
     return this._preRenderedEl;
   else {
-    var id = `${this.index}`;
-    var el = addElement(undefined, 'div', '', 'item_cell', id);
+    var id = `item_${this.index}`;
+    var el = addElement(undefined, 'div', '', 'item_cell');
     var fig = addElement(el, 'figure', '', 'item_class', id);
     fig.setAttribute('tabindex', '0');
+    fig.dataset.itemId = this.index;
     fig.addEventListener('click', onItemClick);
-    var img = addElement(fig, 'img', undefined, undefined, id);
+    var img = addElement(fig, 'img', undefined, undefined);
     img.src = this.path;
     img.alt = `${this.caption} product image`;
-    addElement(fig, 'figcaption', this.caption, undefined, id);
+    addElement(fig, 'figcaption', this.caption, undefined);
     return el;
   }
 };
@@ -255,7 +256,7 @@ BusMallItem.prototype.render = function () {
  * @param {*} event
  */
 function onItemClick(event) {
-  var index = parseInt(event.target.id);
+  var index = parseInt(event.currentTarget.dataset.itemId);
   var item = BusMallItem.list[index];
 
   item.incrementVoteCount();
@@ -308,14 +309,66 @@ function renderCurrentSet() {
 function toggleOpaque(force) {
   var el = document.getElementById('item_row');
   el.classList.toggle('opaque', force);
-  // for (var i = 0; i < el.childElementCount; i++) {
-  //   el.children[i].classList.toggle('opaque', force);
-  // }
 }
 
 function onClickRunAgain(e) {
   doNextSet();
 }
+
+function doNextSet() {
+  gameState.getNextRandomSet();
+  renderCurrentSet();
+}
+
+function restoreGameState() {
+  // Load the previous game state if there is one
+  gameState.getGameState();
+  if (gameState.currentSet.length > 0) {
+    renderCurrentSet();
+  } else {
+    doNextSet();
+  }
+}
+
+function startGame() {
+  console.log('Starting...')
+  // protect against infinite loop!
+  if (displayAtOnce * 2 > BusMallItem.list.length) {
+    alert(`Can't display ${displayAtOnce} in two sets without duplicating!`);
+  } else {
+    restoreGameState();
+  }
+}
+
+function initializeBusMall() {
+  // Load all BusMallItem objects
+  new BusMallItem('assets/images/bag.jpg', 'Bag');
+  new BusMallItem('assets/images/banana.jpg', 'Banana');
+  new BusMallItem('assets/images/bathroom.jpg', 'Bathroom');
+  new BusMallItem('assets/images/boots.jpg', 'Boots');
+  new BusMallItem('assets/images/breakfast.jpg', 'Breakfast');
+  new BusMallItem('assets/images/bubblegum.jpg', 'Bubblegum');
+  new BusMallItem('assets/images/chair.jpg', 'Chair');
+  new BusMallItem('assets/images/cthulhu.jpg', 'Cthulhu');
+  new BusMallItem('assets/images/dog-duck.jpg', 'Dog-Duck');
+  new BusMallItem('assets/images/dragon.jpg', 'Dragon');
+  new BusMallItem('assets/images/pen.jpg', 'Pen');
+  new BusMallItem('assets/images/pet-sweep.jpg', 'Pet-Sweep');
+  new BusMallItem('assets/images/scissors.jpg', 'Scissors');
+  new BusMallItem('assets/images/shark.jpg', 'Shark');
+  new BusMallItem('assets/images/sweep.png', 'Sweep');
+  new BusMallItem('assets/images/tauntaun.jpg', 'Taun-taun');
+  new BusMallItem('assets/images/unicorn.jpg', 'Unicorn');
+  new BusMallItem('assets/images/usb.gif', 'USB');
+  new BusMallItem('assets/images/water-can.jpg', 'Water Can');
+  new BusMallItem('assets/images/wine-glass.jpg', 'Wine Glass');
+
+  // Start the game after all image assets are loaded
+  window.onload = startGame;
+  // document.addEventListener('load', startGame);
+}
+
+// Show The Results -----------------------------------------------------
 
 function renderResultsAsList() {
   for (var i = 0; i < BusMallItem.list.length; i++) {
@@ -396,59 +449,6 @@ function renderResults() {
   var btn = addElement(reportContainer, 'button', 'Run Again');
   btn.addEventListener('click', onClickRunAgain);
   reportContainer.scrollIntoView(true);
-}
-
-function doNextSet() {
-  gameState.getNextRandomSet();
-  renderCurrentSet();
-}
-
-function restoreGameState() {
-  // Load the previous game state if there is one
-  gameState.getGameState();
-  if (gameState.currentSet.length > 0) {
-    renderCurrentSet();
-  } else {
-    doNextSet();
-  }
-}
-
-function startGame() {
-  console.log('Starting...')
-  // protect against infinite loop!
-  if (displayAtOnce * 2 > BusMallItem.list.length) {
-    alert(`Can't display ${displayAtOnce} in two sets without duplicating!`);
-  } else {
-    restoreGameState();
-  }
-}
-
-function initializeBusMall() {
-  // Load all BusMallItem objects
-  new BusMallItem('assets/images/bag.jpg', 'Bag');
-  new BusMallItem('assets/images/banana.jpg', 'Banana');
-  new BusMallItem('assets/images/bathroom.jpg', 'Bathroom');
-  new BusMallItem('assets/images/boots.jpg', 'Boots');
-  new BusMallItem('assets/images/breakfast.jpg', 'Breakfast');
-  new BusMallItem('assets/images/bubblegum.jpg', 'Bubblegum');
-  new BusMallItem('assets/images/chair.jpg', 'Chair');
-  new BusMallItem('assets/images/cthulhu.jpg', 'Cthulhu');
-  new BusMallItem('assets/images/dog-duck.jpg', 'Dog-Duck');
-  new BusMallItem('assets/images/dragon.jpg', 'Dragon');
-  new BusMallItem('assets/images/pen.jpg', 'Pen');
-  new BusMallItem('assets/images/pet-sweep.jpg', 'Pet-Sweep');
-  new BusMallItem('assets/images/scissors.jpg', 'Scissors');
-  new BusMallItem('assets/images/shark.jpg', 'Shark');
-  new BusMallItem('assets/images/sweep.png', 'Sweep');
-  new BusMallItem('assets/images/tauntaun.jpg', 'Taun-taun');
-  new BusMallItem('assets/images/unicorn.jpg', 'Unicorn');
-  new BusMallItem('assets/images/usb.gif', 'USB');
-  new BusMallItem('assets/images/water-can.jpg', 'Water Can');
-  new BusMallItem('assets/images/wine-glass.jpg', 'Wine Glass');
-
-  // Start the game after all image assets are loaded
-  window.onload = startGame;
-  // document.addEventListener('load', startGame);
 }
 
 // Helper Functions -----------------------------------------------------
