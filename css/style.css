@@ -1,5 +1,5 @@
 /* *:hover {
-  outline: dashed 0.3vw rgba(202, 0, 0, 0.5);
+  outline: dashed 0.3vw rgba(155, 0, 202, 0.5);
 } */
 
 /* `Clear Floated Elements                      */
@@ -20,7 +20,7 @@ body {
   min-height: 100vh;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 2vw;
-  color: hsl(270, 33%, 33%);
+  color: #320d56;
   background-color: hsl(90, 20%, 90%);
 }
 
@@ -116,8 +116,8 @@ figure {
   transition: transform 350ms;
 }
 
-figure:hover,
-figure:focus-within {
+.item_cell:hover figure,
+.item_cell:focus-within figure {
   transform: scale(1.07) translateY(-0.7em) rotate(-0.025turn);
 }
 
