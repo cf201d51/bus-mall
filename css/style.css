@@ -175,3 +175,14 @@ body > footer {
 body > footer > div {
   padding: 0.2em 4em;
 }
+
+body > footer > div > span {
+  float: right;
+}
+
+body > footer > div > span > img {
+  border: 0;
+  width: calc(2.83 * 1.5em);
+  height: 1.5em;
+  cursor: pointer;
+}
