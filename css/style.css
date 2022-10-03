@@ -116,24 +116,41 @@ figure {
   transition: transform 350ms;
 }
 
+/* vignette effect */
+figure::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 1em;
+  background-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0) 66%,
+    rgba(49, 34, 0, 0.2) 100%
+  );
+}
+
 .item_cell:hover figure,
 .item_cell:focus-within figure {
   transform: scale(1.07) translateY(-0.7em) rotate(-0.025turn);
 }
 
 figure img {
-  cursor: pointer;
   display: block;
   margin: auto;
+  width: 100%;
   max-height: 12em;
-  max-width: 12em;
+  object-fit: contain;
   border-radius: 1em 1em 0 0;
 }
 
 figcaption {
   background-color: hsl(90, 33%, 66%);
   border-radius: 0 0 0.75em 0.75em;
-  font-family: "Permanent Marker";
+  font-family: 'Permanent Marker';
   font-size: 1.25em;
   font-weight: bold;
   line-height: 2em;
