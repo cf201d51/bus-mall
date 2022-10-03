@@ -116,11 +116,6 @@ figure {
   transition: transform 350ms;
 }
 
-figure:hover,
-figure:focus-within {
-  transform: scale(1.1);
-}
-
 /* vignette effect */
 figure::after {
   content: '';
