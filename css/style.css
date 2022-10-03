@@ -122,18 +122,18 @@ figure {
 }
 
 figure img {
-  cursor: pointer;
   display: block;
   margin: auto;
+  width: 100%;
   max-height: 12em;
-  max-width: 12em;
+  object-fit: contain;
   border-radius: 1em 1em 0 0;
 }
 
 figcaption {
   background-color: hsl(90, 33%, 66%);
   border-radius: 0 0 0.75em 0.75em;
-  font-family: "Permanent Marker";
+  font-family: 'Permanent Marker';
   font-size: 1.25em;
   font-weight: bold;
   line-height: 2em;
