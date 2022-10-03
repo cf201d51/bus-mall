@@ -116,6 +116,28 @@ figure {
   transition: transform 350ms;
 }
 
+figure:hover,
+figure:focus-within {
+  transform: scale(1.1);
+}
+
+/* vignette effect */
+figure::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 1em;
+  background-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0) 66%,
+    rgba(49, 34, 0, 0.2) 100%
+  );
+}
+
 .item_cell:hover figure,
 .item_cell:focus-within figure {
   transform: scale(1.07) translateY(-0.7em) rotate(-0.025turn);
